@@ -48,11 +48,11 @@
         </header>
         <section class="modal-card-body">
           <div class="content">
-            <vue-markdown :source="this.detalhesVaga"></vue-markdown>
+            <vue-markdown :source="detalhesVaga.body"></vue-markdown>
           </div>
         </section>
         <footer class="modal-card-foot centered-content">
-          <button class="button is-success">Acessar issue da vaga</button>
+          <a class="button is-success" target="_blank" :href="detalhesVaga.html_url">Acessar issue da vaga</a>
         </footer>
       </div>
     </b-modal>
@@ -72,7 +72,7 @@ export default {
       proximoLink: 'https://api.github.com/repos/frontendbr/vagas/issues?state=open',
       loading: false,
       vagas: [],
-      detalhesVaga: '',
+      detalhesVaga: {},
       mostrandoModalDetalhes: false
     }
   },
@@ -112,7 +112,8 @@ export default {
         markdown = markdown.replace('   -', '-');
         markdown = markdown.replace('  -', '-');
         
-        this.detalhesVaga = markdown;
+        response.data.body = markdown;
+        this.detalhesVaga = response.data;
 
         this.mostrandoModalDetalhes = true;
         this.loading = false;
