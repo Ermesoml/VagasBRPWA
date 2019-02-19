@@ -23,7 +23,7 @@
                     <img :src="vaga.user.avatar_url" alt="Avagar URL" class="is-rounded">
                   </figure>
                 </div>
-                <div class="media-content">
+                <div class="content">
                   <div class="title is-6 no-padding">{{vaga.title}}</div>
                     <p>
                       <b-taglist>
@@ -41,7 +41,7 @@
       </div>
       <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"></b-loading>
     </div>
-    <b-modal :active.sync="mostrandoModalDetalhes" :width="640" scroll="keep">
+    <b-modal :active.sync="mostrandoModalDetalhes" :has-modal-card="true">
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Detalhes da vaga</p>
@@ -113,8 +113,6 @@ export default {
         markdown = markdown.replace('  -', '-');
         
         this.detalhesVaga = markdown;
-
-        console.log(this.detalhesVaga);
 
         this.mostrandoModalDetalhes = true;
         this.loading = false;
