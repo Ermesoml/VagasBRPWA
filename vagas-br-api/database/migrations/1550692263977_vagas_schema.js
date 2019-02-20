@@ -8,7 +8,7 @@ class VagasSchema extends Schema {
       table.increments()
       table.string('github_id').notNullable()
       table.string('title').notNullable()
-      table.string('body').notNullable()
+      table.text('body').notNullable()
       table.string('html_url').notNullable()
       table.string('user_login').notNullable()
       table.timestamps()

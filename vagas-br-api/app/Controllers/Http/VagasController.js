@@ -6,10 +6,8 @@ const Vaga = use('App/Models/Vaga')
 class VagasController {
   async BuscarVagasRepositorio (){
     axios.get("https://api.github.com/repos/frontendbr/vagas/issues?state=open").then(async (response) => {
-      
-      return response;
 
-      for (let j = 0; j < response.data; j++) {
+      for (let i = 0; i < response.data.length; i++) {
         let vagaGit = response.data[i];
 
         try {
@@ -25,7 +23,7 @@ class VagasController {
           vaga.title = vagaGit.title;
           vaga.body = vagaGit.body;
           vaga.user_login = vagaGit.user.login;
-          vaga.html_url = vagaGit.url_html
+          vaga.html_url = vagaGit.html_url
     
           await vaga.save()
           console.log(`Nova vaga ${vagaGit.title}`)
