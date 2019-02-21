@@ -5,36 +5,60 @@ const Vaga = use('App/Models/Vaga')
 
 class VagasController {
   async BuscarVagasRepositorio (){
-    axios.get("https://api.github.com/repos/frontendbr/vagas/issues?state=open").then(async (response) => {
+    let respostaVagas = await this.BuscarVagasURL("https://api.github.com/repos/frontendbr/vagas/issues?state=open");
+    this.InserirAtualizarVagasBanco(respostaVagas);
+    return {status: 'ok'}
+  }
 
-      for (let i = 0; i < response.data.length; i++) {
-        let vagaGit = response.data[i];
+  async BuscarVagasURL(url){
+    if (!url) return [];
 
-        try {
-          // const despesa_banco = await Despesa.query().where('idDocumento', despesa.idDocumento).where('deputadoId', despesa.deputadoId).fetch();
-          // if (despesa_banco.rows.length > 0){
-          //   var despesaAtualizar = await Despesa.find(despesa_banco.rows[0].id);
-          // }
-          // else {
-            var vaga = new Vaga();
-          // }
-            
-          vaga.github_id = vagaGit.id;
-          vaga.title = vagaGit.title;
-          vaga.body = vagaGit.body;
-          vaga.user_login = vagaGit.user.login;
-          vaga.html_url = vagaGit.html_url
-    
-          await vaga.save()
-          console.log(`Nova vaga ${vagaGit.title}`)
-        }
-        catch(error){
-          console.log('Erro ao gravar vaga: ' +  error)
-        }
-      }
+    return await axios.get(url).then(async (response) => {      
+      let proximaUrl = await this.BuscarProximaURL(response.headers);
+      console.log(proximaUrl);
+      let proximasVagas = await this.BuscarVagasURL(proximaUrl);
+      return [...response.data, ...proximasVagas];
     });
+  }
 
-    return {v: 'b'}
+  async BuscarProximaURL(headers){
+    let links = headers.link;
+    let proximaUrl = '';
+    links.replace(new RegExp("(<([^,]*))", "g"), function($0, $1, $2, $3) {
+      if ($1.indexOf("next") > -1){
+        $1.replace(new RegExp("(https([^>]*))", "g"), function($0, $1, $2, $3) {
+          proximaUrl = $1; 
+        })
+      }
+    })
+
+    return proximaUrl;
+  }
+
+  async InserirAtualizarVagasBanco(vagas){
+    for (let i = 0; i < vagas.length; i++) {
+      try {
+        const vaga_banco = await Vaga.query().where('github_id', vagas[i].id).fetch();
+        if (vaga_banco.rows.length > 0){
+          var vaga = await Vaga.find(vaga_banco.rows[0].id);
+        }
+        else {
+          var vaga = new Vaga();
+        }
+          
+        vaga.github_id = vagas[i].id;
+        vaga.title = vagas[i].title;
+        vaga.body = vagas[i].body;
+        vaga.user_login = vagas[i].user.login;
+        vaga.html_url = vagas[i].html_url;
+  
+        await vaga.save()
+        console.log(`Atualizado ${vagas[i].title}`)
+      }
+      catch(error){
+        console.log('Erro ao gravar vaga: ' +  error)
+      }
+    }
   }
 }
 
