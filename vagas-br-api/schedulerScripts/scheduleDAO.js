@@ -12,20 +12,22 @@ class scheduleDatabase {
   }
 
   criarAgendamento(){
-    let created = new Date();
+    let ids = [1, 2]
 
-    const agendamento = {
-      token: MD5(`ASHGJUzxcvgwQER${created}2215fs`),
-      url: 'https://api.github.com/repos/frontendbr/vagas/issues?state=open',
-      created_at: created,
-      updated_at: created,
-    }
-    
-    this.connection.query('INSERT INTO agendamento_busca_vagas SET ?', agendamento, function (error, results, fields) {
+    this.connection.query('select * from VAGAS where ID in (?) ', [ids], function (error, results, fields) {
       if (error) throw error;
-      console.log('Agendamento de busca inserido com sucesso');
+
+      var resultadosMap = new Map();
+
+      results.map(elemento => {
+        // console.log(elemento);
+        resultadosMap.set(elemento.github_id, elemento.id);
+      });
+
+      console.log(resultadosMap.get(results[0].github_id) ? true : false);
       process.exit();
     });
+
   }
 }
 
