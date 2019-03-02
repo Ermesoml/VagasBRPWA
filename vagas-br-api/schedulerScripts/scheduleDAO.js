@@ -12,6 +12,33 @@ class scheduleDatabase {
   }
 
   async InserirAtualizarVagasBanco(vagas){
+    let ids = []; 
+    vagas.forEach(vaga => {
+      ids.push(vaga.id)
+    });
+
+    this.connection.query('select * from VAGAS where ID in (?) ', [ids], function (error, results, fields) {
+      if (error) throw error;
+
+      var resultadosMap = new Map();
+
+      results.map(elemento => {
+        resultadosMap.set(elemento.github_id, elemento.id);
+      });
+
+      console.log(resultadosMap.get(results[0].github_id) ? true : false);
+      
+      vagas.forEach(vaga => {
+        if (resultadosMap.get(vaga.github_id)){
+          this.connection.query('update VAGAS set body = ?, title = ? where id = ?', [vaga.body, vaga.title, resultadosMap.get(vaga.github_id)], function (error, results, fields) {
+            if (error) throw error;
+          });
+        }
+      });
+      
+      process.exit();
+    });
+    
     for (let i = 0; i < vagas.length; i++) {
       try {
         const vaga_banco = await Vaga.query().where('github_id', vagas[i].id).fetch();
@@ -39,19 +66,6 @@ class scheduleDatabase {
 
   criarAgendamento(){
     let ids = [1, 2]
-
-    this.connection.query('select * from VAGAS where ID in (?) ', [ids], function (error, results, fields) {
-      if (error) throw error;
-
-      var resultadosMap = new Map();
-
-      results.map(elemento => {
-        resultadosMap.set(elemento.github_id, elemento.id);
-      });
-
-      console.log(resultadosMap.get(results[0].github_id) ? true : false);
-      process.exit();
-    });
   }
 }
 

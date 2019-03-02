@@ -6,7 +6,6 @@ class scheduleVagas {
   }
   async BuscarTodasVagasRepositorio (){
     let respostaVagas = await this.BuscarVagasURL("https://api.github.com/repos/frontendbr/vagas/issues?state=open");
-    // this.InserirAtualizarVagasBanco(respostaVagas);
     return respostaVagas;
   }
 
