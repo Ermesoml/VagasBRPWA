@@ -15,7 +15,7 @@ class scheduleVagas {
     return await axios.get(url).then(async (response) => {      
       let proximaUrl = await this.BuscarProximaURL(response.headers);
       console.log(proximaUrl);
-      let proximasVagas = await this.BuscarVagasURL(proximaUrl);
+      let proximasVagas = await this.BuscarVagasURL('');
       return [...response.data, ...proximasVagas];
     });
   }

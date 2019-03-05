@@ -4,16 +4,20 @@ const axios = require('axios');
 const scheduleDatabase = require('./scheduleDAO.js')
 const scheduleVagas = require('./scheduleVagas.js')
 
-function buscarVagas() {
+async function buscarVagas() {
   console.log('Agendamento de busca iniciado');
 
-  let databaseInstance = new scheduleVagas();
-  databaseInstance.BuscarTodasVagasRepositorio().then(response => {
-    console.log(response);
+  let buscadorVagas = new scheduleVagas();
+  let databaseInstance = new scheduleDatabase();
+  
+  let vagas = await buscadorVagas.BuscarTodasVagasRepositorio().then(async response => {
+    return response;
   });
 
-  // let databaseInstance = new scheduleDatabase();
-  // databaseInstance.criarAgendamento();
+  await databaseInstance.InserirAtualizarVagasBanco(vagas);
+    // console.log(1)
+
+  console.log(2)
 }
 
 buscarVagas();

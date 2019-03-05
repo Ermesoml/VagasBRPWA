@@ -17,8 +17,13 @@ class scheduleDatabase {
       ids.push(vaga.id)
     });
 
-    this.connection.query('select * from VAGAS where ID in (?) ', [ids], function (error, results, fields) {
+    console.log(3)
+    await this.connection.query('select * from VAGAS where github_id in (?) ', [ids], async (error, results, fields) => {
       if (error) throw error;
+
+      console.log(4)
+
+      console.log('Atualizando vagas');
 
       var resultadosMap = new Map();
 
@@ -26,46 +31,21 @@ class scheduleDatabase {
         resultadosMap.set(elemento.github_id, elemento.id);
       });
 
-      console.log(resultadosMap.get(results[0].github_id) ? true : false);
-      
-      vagas.forEach(vaga => {
-        if (resultadosMap.get(vaga.github_id)){
-          this.connection.query('update VAGAS set body = ?, title = ? where id = ?', [vaga.body, vaga.title, resultadosMap.get(vaga.github_id)], function (error, results, fields) {
+      for (let i = 0; i < vagas.length; i++) {
+        const vaga = vagas[i];
+        
+        if (resultadosMap.get(vaga.id.toString())){
+          
+          await this.connection.query('update VAGAS set body = ?, title = ? where id = ?', [vaga.id, vaga.id, resultadosMap.get(vaga.id.toString())], async (error, results, fields) => {
             if (error) throw error;
+            console.log('Vaga atualizada')
+            return results;
           });
         }
-      });
-      
+      };
+
       process.exit();
     });
-    
-    for (let i = 0; i < vagas.length; i++) {
-      try {
-        const vaga_banco = await Vaga.query().where('github_id', vagas[i].id).fetch();
-        if (vaga_banco.rows.length > 0){
-          var vaga = await Vaga.find(vaga_banco.rows[0].id);
-        }
-        else {
-          var vaga = new Vaga();
-        }
-          
-        vaga.github_id = vagas[i].id;
-        vaga.title = vagas[i].title;
-        vaga.body = vagas[i].body;
-        vaga.user_login = vagas[i].user.login;
-        vaga.html_url = vagas[i].html_url;
-  
-        await vaga.save()
-        console.log(`Atualizado ${vagas[i].title}`)
-      }
-      catch(error){
-        console.log('Erro ao gravar vaga: ' +  error)
-      }
-    }
-  }
-
-  criarAgendamento(){
-    let ids = [1, 2]
   }
 }
 
