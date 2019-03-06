@@ -25,7 +25,8 @@
     "@adonisjs/ignitor": "^2.0.8",
     "@adonisjs/lucid": "^6.1.3",
     "axios": "^0.18.0",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "url-parse": "^1.4.4"
   },
   "devDependencies": {},
   "autoload": {

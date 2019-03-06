@@ -6,11 +6,11 @@ class VagasSchema extends Schema {
   up () {
     this.create('vagas', (table) => {
       table.increments()
-      table.string('github_id').notNullable()
-      table.string('title').notNullable()
+      table.string('github_id', 255).notNullable()
+      table.string('title', 255).notNullable()
       table.text('body').notNullable()
-      table.string('html_url').notNullable()
-      table.string('user_login').notNullable()
+      table.string('html_url', 255).notNullable()
+      table.string('user_login', 255).notNullable()
       table.string('status', 3).default('ABE')
       table.timestamps()
     })
