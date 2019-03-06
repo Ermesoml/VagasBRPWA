@@ -11,6 +11,7 @@ class VagasSchema extends Schema {
       table.text('body').notNullable()
       table.string('html_url').notNullable()
       table.string('user_login').notNullable()
+      table.string('status', 3).default('ABE')
       table.timestamps()
     })
   }

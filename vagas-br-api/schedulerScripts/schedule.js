@@ -15,9 +15,6 @@ async function buscarVagas() {
   });
 
   await databaseInstance.InserirAtualizarVagasBanco(vagas);
-    // console.log(1)
-
-  console.log(2)
 }
 
 buscarVagas();

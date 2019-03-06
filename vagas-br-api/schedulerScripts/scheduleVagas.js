@@ -12,10 +12,11 @@ class scheduleVagas {
   async BuscarVagasURL(url){
     if (!url) return [];
 
+    console.log('Buscando dados da api: ' + url);
+
     return await axios.get(url).then(async (response) => {      
       let proximaUrl = await this.BuscarProximaURL(response.headers);
-      console.log(proximaUrl);
-      let proximasVagas = await this.BuscarVagasURL('');
+      let proximasVagas = await this.BuscarVagasURL(proximaUrl);
       return [...response.data, ...proximasVagas];
     });
   }
