@@ -17,7 +17,7 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+  return { greeting: 'Vagas API v1.0' }
 })
 
-Route.get('/atualizar', 'VagasController.BuscarVagasRepositorio')
+Route.get('/vagas', 'VagasController.all')
