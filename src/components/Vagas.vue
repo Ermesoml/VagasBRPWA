@@ -19,15 +19,15 @@
             <div class="card-content">
               <div class="media">
                 <div class="media-left">
-                  <figure class="image is-96x96">
+                  <!-- <figure class="image is-96x96">
                     <img :src="vaga.user.avatar_url" alt="Avagar URL" class="is-rounded">
-                  </figure>
+                  </figure> -->
                 </div>
                 <div class="content">
                   <div class="title is-6 no-padding">{{vaga.title}}</div>
                     <p>
                       <b-taglist>
-                        <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vaga.labels">{{label.name}}</b-tag>
+                        <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vaga.labels" key="label.id">{{label.name}}</b-tag>
                       </b-taglist>
                     </p>
                 </div>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="centered-content" v-if="!loading && proximoLink">
+      <div class="centered-content" v-if="!loading && linkAPI">
         <button class="button is-rounded" @click="carregarVagas">Carregar mais</button>
       </div>
       <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"></b-loading>
@@ -48,11 +48,11 @@
         </header>
         <section class="modal-card-body">
           <div class="content">
-            <vue-markdown :source="detalhesVaga.body"></vue-markdown>
+            <vue-markdown :source="vagaSelecionada.body | tratarCorpoVaga"></vue-markdown>
           </div>
         </section>
         <footer class="modal-card-foot centered-content">
-          <a class="button is-success" target="_blank" :href="detalhesVaga.html_url">Acessar issue da vaga</a>
+          <a class="button is-success" target="_blank" :href="vagaSelecionada.html_url">Acessar issue da vaga</a>
         </footer>
       </div>
     </b-modal>
@@ -69,83 +69,68 @@ export default {
   },
   data () {
     return {
-      proximoLink: 'https://api.github.com/repos/frontendbr/vagas/issues?state=open',
+      linkAPI: process.env.VAGAS_API,
       loading: false,
       vagas: [],
-      detalhesVaga: {},
+      vagaSelecionada: {},
       mostrandoModalDetalhes: false
     }
   },
-  mounted(){
+  filters: {
+    tratarCorpoVaga: function (value) {
+      if (!value) return ''
+      let markdown = value;
+
+      const preReg = /<pre>([\s\S]*?)<\/pre>/g;
+      let match;
+      let lastIndex = 0;
+
+      markdown = '';
+
+      /* eslint-disable no-cond-assign */
+      while ((match = preReg.exec(value))) {
+        markdown += value.substring(lastIndex, match.index);
+        markdown += match[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
+        lastIndex = match.index + match[0].length;
+      }
+
+      if (lastIndex < value.length) {
+        markdown += value.substring(lastIndex);
+      }
+
+      markdown = markdown.replace(' -', '-');
+      markdown = markdown.replace('   -', '-');
+      markdown = markdown.replace('  -', '-');
+      markdown = markdown.replace('   -', '-');
+      markdown = markdown.replace('  -', '-');
+      
+      value = markdown;
+      return markdown
+    }
+  },
+  created(){
     this.carregarVagas();
   },
   methods: {
     mostrarDetalhesVaga(vaga){
-      this.buscarDetalhesVaga(vaga.number);
-    },  
-    buscarDetalhesVaga(numero){
       this.loading = true;
-
-      this.axios.get(`https://api.github.com/repos/frontendbr/vagas/issues/${numero}`)
-      .then((response) => {
-        let markdown = response.data.body;
-
-        const preReg = /<pre>([\s\S]*?)<\/pre>/g;
-        let match;
-        let lastIndex = 0;
-
-        markdown = '';
-
-        /* eslint-disable no-cond-assign */
-        while ((match = preReg.exec(response.data.body))) {
-          markdown += response.data.body.substring(lastIndex, match.index);
-          markdown += match[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
-          lastIndex = match.index + match[0].length;
-        }
-
-        if (lastIndex < response.data.body.length) {
-          markdown += response.data.body.substring(lastIndex);
-        }
-        markdown = markdown.replace(' -', '-');
-        markdown = markdown.replace('   -', '-');
-        markdown = markdown.replace('  -', '-');
-        markdown = markdown.replace('   -', '-');
-        markdown = markdown.replace('  -', '-');
-        
-        response.data.body = markdown;
-        this.detalhesVaga = response.data;
-
-        this.mostrandoModalDetalhes = true;
-        this.loading = false;
-      })
+      this.vagaSelecionada = vaga;
+      this.mostrandoModalDetalhes = true;
+      this.loading = false;
     },
     carregarVagas(){
-      if (!this.proximoLink) return;
+      if (!process.env.VAGAS_API) return;
       if (this.loading) return;
-
       this.loading = true;
 
-      this.axios.get(this.proximoLink)
+      this.axios.get(process.env.VAGAS_API)
       .then((response) => {
-        let links = response.headers.link;
-
-        this.proximoLink = '';
-        let proximaUrl = '';
-
-        links.replace(new RegExp("(<([^,]*))", "g"), function($0, $1, $2, $3) {
-          if ($1.indexOf("next") > -1){
-            $1.replace(new RegExp("(https([^>]*))", "g"), function($0, $1, $2, $3) {
-              proximaUrl = $1; 
-            })
-          }
-        })
-
-        this.proximoLink = proximaUrl;
-        this.vagas = [...this.vagas, ...response.data];
+        this.vagas = [...response.data];
         this.loading = false;
       })
       .catch(err => {
-        alert('Ocorreu um erro na requisição! ' + JSON.stringify(err))
+        console.error('Ocorreu um erro na requisição! ' + JSON.stringify(err))
+        this.loading = false;
       })
     }
   }
