@@ -19,15 +19,15 @@
             <div class="card-content">
               <div class="media">
                 <div class="media-left">
-                  <!-- <figure class="image is-96x96">
-                    <img :src="vaga.user.avatar_url" alt="Avagar URL" class="is-rounded">
-                  </figure> -->
+                  <figure class="image is-96x96">
+                    <img :src="vaga.user_avatar_url" alt="Avagar URL" class="is-rounded">
+                  </figure>
                 </div>
                 <div class="content">
                   <div class="title is-6 no-padding">{{vaga.title}}</div>
                     <p>
                       <b-taglist>
-                        <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vaga.labels" key="label.id">{{label.name}}</b-tag>
+                        <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vaga.labels">{{label.name}}</b-tag>
                       </b-taglist>
                     </p>
                 </div>
