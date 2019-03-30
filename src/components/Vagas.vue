@@ -48,6 +48,13 @@
         </header>
         <section class="modal-card-body">
           <div class="content">
+            <h1>{{vagaSelecionada.title}}</h1>
+            <p>
+              <b-taglist>
+                <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vagaSelecionada.labels">{{label.name}}</b-tag>
+              </b-taglist>
+            </p>
+            <hr>
             <vue-markdown :source="vagaSelecionada.body | tratarCorpoVaga"></vue-markdown>
           </div>
         </section>
