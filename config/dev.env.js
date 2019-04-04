@@ -4,5 +4,5 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  VAGAS_API: '"https://vagas-br-api.herokuapp.com/"'
+  VAGAS_API: '"http://localhost:3000"'
 })

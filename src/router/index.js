@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Vagas from '@/components/Vagas'
+import ListaVagas from '@/components/ListaVagas'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -13,7 +13,7 @@ export default new Router({
     {
       path: '/',
       name: 'Vagas',
-      component: Vagas
+      component: ListaVagas
     }
   ]
 })

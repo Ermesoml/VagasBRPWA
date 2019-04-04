@@ -4,10 +4,10 @@
       <div class="hero-body">
         <div class="container has-text-centered">
           <p class="title">
-            Vagas de frontend
+            Vagas Abertas
           </p>
           <p class="subtitle">
-            @frontendbr
+            @frontendbr, @backendbr
           </p>
         </div>
       </div>
@@ -15,33 +15,15 @@
     <div class="section">
       <div class="row columns is-multiline">
         <div class="column is-one-third" v-for="vaga in vagas">
-          <div class="card large round is-shady" @click="mostrarDetalhesVaga(vaga)">
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-96x96">
-                    <img :src="vaga.user_avatar_url" alt="Avagar URL" class="is-rounded">
-                  </figure>
-                </div>
-                <div class="content">
-                  <div class="title is-6 no-padding">{{vaga.title}}</div>
-                    <p>
-                      <b-taglist>
-                        <b-tag :style="`background-color:#${label.color};color:white`" v-for="label in vaga.labels">{{label.name}}</b-tag>
-                      </b-taglist>
-                    </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <card-vaga :vaga="vaga" @click="mostrarDetalhesVaga(vaga)"></card-vaga>
         </div>
       </div>
-      <div class="centered-content" v-if="!loading && linkAPI">
-        <button class="button is-rounded" @click="carregarVagas">Carregar mais</button>
+      <div class="centered-content" v-if="!loading">
+        {{vagas.length}} vagas listadas
       </div>
       <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"></b-loading>
     </div>
-    <b-modal :active.sync="mostrandoModalDetalhes" :has-modal-card="true">
+    <!-- <b-modal :active.sync="mostrandoModalDetalhes" :has-modal-card="true">
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Detalhes da vaga</p>
@@ -62,17 +44,19 @@
           <a class="button is-success" target="_blank" :href="vagaSelecionada.html_url">Acessar issue da vaga</a>
         </footer>
       </div>
-    </b-modal>
+    </b-modal> -->
   </div>
 </template>
 
 <script>
 import VueMarkdown from 'vue-markdown'
+import CardVaga from '@/components/CardVaga'
 
 export default {
   name: 'Vagas',
   components: {
-    VueMarkdown
+    VueMarkdown,
+    CardVaga
   },
   data () {
     return {
