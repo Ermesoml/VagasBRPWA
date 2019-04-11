@@ -15,7 +15,9 @@
     <div class="section">
       <div class="row columns is-multiline">
         <div class="column is-one-third" v-for="vaga in vagas">
-          <card-vaga :vaga="vaga" @click.native="mostrarDetalhesVaga(vaga)"></card-vaga>
+          <router-link :to="`/vaga/${vaga._id}`">
+            <card-vaga :vaga="vaga"></card-vaga>
+          </router-link>
         </div>
       </div>
       <div class="centered-content" v-if="!loading">
@@ -49,10 +51,6 @@
       this.carregarVagas();
     },
     methods: {
-      mostrarDetalhesVaga(vaga){
-        // this.loading = true;
-        this.$router.push({ path: `/vaga/${vaga._id}` }) 
-      },
       carregarVagas(){
         if (!this.linkAPI) return;
         if (this.loading) return;

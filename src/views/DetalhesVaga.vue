@@ -1,18 +1,17 @@
 <template class="is-clipped">
   <div class="container">
-    <section class="">
-      <div class="content">
-        <h1>{{vaga.title}}</h1>
-        <p>
-          <labels-vaga :labels="vaga.labels"></labels-vaga>
-        </p>
+    <section class="section">
+      <header class="content">
+        <h1 class="title">{{vaga.title}}</h1>
+        <labels-vaga :labels="vaga.labels"></labels-vaga>
+        <br>
+        <a class="button is-primary is-fullwidth" target="_blank" :href="vaga.html_url">Acessar issue da vaga</a>
         <hr>
+      </header>
+      <div class="content">
         <vue-markdown :source="vaga.body | tratarCorpoVaga"></vue-markdown>
       </div>
     </section>
-    <footer class="centered-content">
-      <a class="button is-success" target="_blank" :href="vaga.html_url">Acessar issue da vaga</a>
-    </footer>
   </div>
 </template>
 
