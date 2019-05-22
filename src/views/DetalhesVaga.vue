@@ -70,7 +70,7 @@ export default {
     carregarDetalhesVaga(){
       if (!this.linkAPI) return;
   
-      this.axios.get(`${this.linkAPI}vaga/${this.$route.params.vaga_id}`)
+      this.axios.get(`${this.linkAPI}/vaga/${this.$route.params.vaga_id}`)
       .then((response) => {
         this.vaga = response.data
       })

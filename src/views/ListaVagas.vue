@@ -14,14 +14,28 @@
     </section>
     <div class="section">
       <div class="row columns is-multiline">
-        <div class="column is-one-third" v-for="vaga in vagas">
+        <div class="column is-full" v-if="!loading">
+          <b-field class="is-full">
+            <b-input placeholder="Digite aqui seu filtro..."
+              type="search"
+              icon="magnify"
+              v-model="filtroTituloVaga"
+              expanded
+              @keydown.native.enter="carregarVagas($store.state.paginaAtual, filtroTituloVaga)">
+            </b-input>
+            <p class="control">
+              <button class="button is-primary" @click="carregarVagas($store.state.paginaAtual, filtroTituloVaga)">Filtrar</button>
+            </p>
+          </b-field>
+        </div>
+        <div class="column is-one-third" v-for="vaga in $store.state.vagas">
           <router-link :to="`/vaga/${vaga._id}`">
             <card-vaga :vaga="vaga"></card-vaga>
           </router-link>
         </div>
       </div>
-      <div class="centered-content" v-if="!loading">
-        {{vagas.length}} vagas listadas
+      <div class="centered-content" v-if="!loading && $store.state.vagas.length > 0">
+        <b-button rounded @click="carregarVagas($store.state.paginaAtual + 1, filtroTituloVaga)">Buscar mais vagas</b-button>
       </div>
       <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"></b-loading>
     </div>
@@ -38,34 +52,28 @@
       VueMarkdown,
       CardVaga
     },
-    data () {
-      return {
-        linkAPI: process.env.VUE_APP_VAGAS_API,
-        loading: false,
-        vagas: [],
-        vagaSelecionada: {},
-        mostrandoModalDetalhes: false
+    computed:{
+      loading: function(){
+        return this.$store.state.loading;
+      },
+     
+      filtroTituloVaga: {
+        get () {
+          return this.$store.state.filtroTituloVaga;
+        },
+        set (value) {
+          this.$store.commit('atualizarFiltros', value)
+        }
       }
+    
     },
     created(){
       this.carregarVagas();
     },
     methods: {
-      carregarVagas(){
-        if (!this.linkAPI) return;
-        if (this.loading) return;
-        this.loading = true;
-
-        this.axios.get(this.linkAPI)
-        .then((response) => {
-          this.vagas = [...response.data];
-          this.loading = false;
-        })
-        .catch(err => {
-          console.error('Ocorreu um erro na requisição! ' + JSON.stringify(err))
-          this.loading = false;
-        })
-      }
+      carregarVagas(pagina = 1, filtroTituloVaga = ''){
+        this.$store.dispatch('buscarVagas', pagina, filtroTituloVaga);
+      },
     }
   }
 </script>
