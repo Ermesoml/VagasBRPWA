@@ -16,7 +16,7 @@ export default new Vuex.Store({
       state.vagas = [...state.vagas, ...payload]
     },
     atualizarPagina(state, payload){
-      state.pagina = payload;
+      state.paginaAtual = payload;
     },
     atualizarLoading(state, payload){
       state.loading = payload;
@@ -29,8 +29,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    buscarVagasNovaPagina({commit, dispatch}, pagina){
-      commit('atualizarPagina', pagina)
+    buscarVagasNovaPagina({commit, dispatch}, novaPagina){
+      commit('atualizarPagina', novaPagina)
       commit('atualizarLoading', true)
       dispatch('buscarVagasAPI');
     },
@@ -42,7 +42,7 @@ export default new Vuex.Store({
       dispatch('buscarVagasAPI');
     },
     buscarVagasAPI({commit, state}){
-      axios.get(`${process.env.VUE_APP_VAGAS_API}/vagas?pagina=${state.pagina}&filtroTituloVaga=${state.filtroTituloVaga}`)
+      axios.get(`${process.env.VUE_APP_VAGAS_API}/vagas?pagina=${state.paginaAtual}&filtroTituloVaga=${state.filtroTituloVaga}`)
       .then((response) => {
         commit('inserirNovasVagas', response.data)
         commit('atualizarLoading', false);
