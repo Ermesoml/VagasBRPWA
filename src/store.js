@@ -42,7 +42,7 @@ export default new Vuex.Store({
       dispatch('buscarVagasAPI');
     },
     buscarVagasAPI({commit, state}){
-      axios.get(`${process.env.VUE_APP_VAGAS_API}?pagina=${state.pagina}&filtroTituloVaga=${state.filtroTituloVaga}`)
+      axios.get(`${process.env.VUE_APP_VAGAS_API}/vagas?pagina=${state.pagina}&filtroTituloVaga=${state.filtroTituloVaga}`)
       .then((response) => {
         commit('inserirNovasVagas', response.data)
         commit('atualizarLoading', false);
