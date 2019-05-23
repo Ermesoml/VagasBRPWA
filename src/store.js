@@ -23,17 +23,26 @@ export default new Vuex.Store({
     },
     atualizarFiltros(state, payload){
       state.filtroTituloVaga = payload;
+    },
+    limparVagas(state){
+      state.vagas = [];
     }
   },
   actions: {
-    buscarVagas({commit, state}, pagina){
-      if (state.vagas.length > 0 && pagina <= state.paginaAtual)
-        return;
-
+    buscarVagasNovaPagina({commit, dispatch}, pagina){
       commit('atualizarPagina', pagina)
       commit('atualizarLoading', true)
-      
-      axios.get(`${process.env.VUE_APP_VAGAS_API}?pagina=${pagina}&filtroTituloVaga=${state.filtroTituloVaga}`)
+      dispatch('buscarVagasAPI');
+    },
+    buscarVagasFiltrando({commit, dispatch}, filtroTituloVaga){
+      commit('atualizarPagina', 1)
+      commit('atualizarLoading', true)
+      commit('atualizarFiltros', filtroTituloVaga);
+      commit('limparVagas');
+      dispatch('buscarVagasAPI');
+    },
+    buscarVagasAPI({commit, state}){
+      axios.get(`${process.env.VUE_APP_VAGAS_API}?pagina=${state.pagina}&filtroTituloVaga=${state.filtroTituloVaga}`)
       .then((response) => {
         commit('inserirNovasVagas', response.data)
         commit('atualizarLoading', false);

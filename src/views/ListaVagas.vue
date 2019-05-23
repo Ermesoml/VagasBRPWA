@@ -21,10 +21,10 @@
               icon="magnify"
               v-model="filtroTituloVaga"
               expanded
-              @keydown.native.enter="carregarVagas($store.state.paginaAtual, filtroTituloVaga)">
+              @keydown.native.enter="filtrarVagas(filtroTituloVaga)">
             </b-input>
             <p class="control">
-              <button class="button is-primary" @click="carregarVagas($store.state.paginaAtual, filtroTituloVaga)">Filtrar</button>
+              <button class="button is-primary" @click="filtrarVagas(filtroTituloVaga)">Filtrar</button>
             </p>
           </b-field>
         </div>
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="centered-content" v-if="!loading && $store.state.vagas.length > 0">
-        <b-button rounded @click="carregarVagas($store.state.paginaAtual + 1, filtroTituloVaga)">Buscar mais vagas</b-button>
+        <b-button rounded @click="carregarVagas($store.state.paginaAtual + 1)">Buscar mais vagas</b-button>
       </div>
       <b-loading :is-full-page="true" :active.sync="loading" :can-cancel="false"></b-loading>
     </div>
@@ -52,28 +52,32 @@
       VueMarkdown,
       CardVaga
     },
+    data(){
+      return {
+        filtroTituloVaga: ''
+      }
+    },
     computed:{
       loading: function(){
         return this.$store.state.loading;
       },
      
-      filtroTituloVaga: {
-        get () {
-          return this.$store.state.filtroTituloVaga;
-        },
-        set (value) {
-          this.$store.commit('atualizarFiltros', value)
-        }
-      }
-    
     },
     created(){
+      this.filtroTituloVaga = this.$store.state.filtroTituloVaga;
+      
+      if (this.$store.state.vagas.length > 0)
+        return;
+      
       this.carregarVagas();
     },
     methods: {
-      carregarVagas(pagina = 1, filtroTituloVaga = ''){
-        this.$store.dispatch('buscarVagas', pagina, filtroTituloVaga);
+      carregarVagas(pagina = 1){
+        this.$store.dispatch('buscarVagasNovaPagina', pagina);
       },
+      filtrarVagas(filtroTituloVaga){
+        this.$store.dispatch('buscarVagasFiltrando', filtroTituloVaga);
+      }
     }
   }
 </script>
