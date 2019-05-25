@@ -1,66 +1,20 @@
 <template class="is-clipped">
-  <div class="container">
-    <section class="section">
-      <header class="content">
-        <h1 class="title">{{vaga.title}}</h1>
-        <labels-vaga :labels="vaga.labels"></labels-vaga>
-        <br>
-        <a class="button is-primary is-fullwidth" target="_blank" :href="vaga.html_url">Acessar issue da vaga</a>
-        <hr>
-      </header>
-      <div class="content">
-        <vue-markdown :source="vaga.body | tratarCorpoVaga"></vue-markdown>
-      </div>
-    </section>
-  </div>
+  <card-detalhes-vaga :vaga="vaga"></card-detalhes-vaga>
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
-import LabelsVaga from "@/components/LabelsVaga"
+
+import CardDetalhesVaga from "@/components/CardDetalhesVaga"
 
 export default {
   name: 'DetalhesVaga',
   components: {
-    VueMarkdown,
-    LabelsVaga
+    CardDetalhesVaga
   },
   data () {
     return {
       linkAPI: process.env.VUE_APP_VAGAS_API,
       vaga: {}
-    }
-  },
-  filters: {
-    tratarCorpoVaga: function (value) {
-      if (!value) return ''
-      let markdown = value;
-
-      const preReg = /<pre>([\s\S]*?)<\/pre>/g;
-      let match;
-      let lastIndex = 0;
-
-      markdown = '';
-
-      /* eslint-disable no-cond-assign */
-      while ((match = preReg.exec(value))) {
-        markdown += value.substring(lastIndex, match.index);
-        markdown += match[0].replace(/(?:\r\n|\r|\n)/g, '<br />');
-        lastIndex = match.index + match[0].length;
-      }
-
-      if (lastIndex < value.length) {
-        markdown += value.substring(lastIndex);
-      }
-
-      markdown = markdown.replace(' -', '-');
-      markdown = markdown.replace('   -', '-');
-      markdown = markdown.replace('  -', '-');
-      markdown = markdown.replace('   -', '-');
-      markdown = markdown.replace('  -', '-');
-      
-      value = markdown;
-      return markdown
     }
   },
   created(){
