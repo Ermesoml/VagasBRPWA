@@ -27,13 +27,12 @@
             Mobile
           </a>
         </div> -->
-
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-primary">
+              <router-link class="button is-primary" to="/contato">
                 <strong>Contato</strong>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
