@@ -30,8 +30,8 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <router-link class="button is-primary" to="/contato">
-                <strong>Contato</strong>
+              <router-link class="button is-primary" to="/sobre">
+                <strong>Sobre</strong>
               </router-link>
             </div>
           </div>

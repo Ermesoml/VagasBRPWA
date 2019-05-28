@@ -5,7 +5,7 @@ import 'buefy/dist/buefy.css'
 
 import ListaVagas from '@/views/ListaVagas'
 import DetalhesVaga from '@/views/DetalhesVaga'
-import Contato from '@/views/Contato'
+import Sobre from '@/views/Sobre'
 
 Vue.use(Buefy)
 Vue.use(Router)
@@ -16,6 +16,6 @@ export default new Router({
   routes: [
     { path: '/', name: 'Vagas', component: ListaVagas },
     { path: '/vaga/:vaga_id', component: DetalhesVaga },
-    { path: '/contato', component: Contato }
+    { path: '/sobre', component: Sobre }
   ]
 })

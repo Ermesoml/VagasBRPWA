@@ -7,7 +7,7 @@
             Vagas Abertas
           </p>
           <p class="subtitle">
-            @frontendbr, @backendbr
+            Vagas abertas para desenvolvedores e designers.
           </p>
         </div>
       </div>

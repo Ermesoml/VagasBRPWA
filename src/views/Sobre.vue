@@ -14,8 +14,6 @@
         </div>
         <div class="column is-full">
           <h1  class="title">Contribuintes</h1>
-        </div>
-        <div class="column is-full">
           <a href="https://github.com/Ermesoml">
             <div class="card large round is-shady">
               <div class="card-content">
@@ -36,6 +34,12 @@
             </div>
           </a>
         </div>
+        <div class="column is-full">
+          <h1  class="title">Fontes do projeto (github)</h1>
+          <a href="https://github.com/Ermesoml/VagasBRAPI">https://github.com/Ermesoml/VagasBRAPI</a>
+          <br>
+          <a href="https://github.com/Ermesoml/VagasBRPWA">https://github.com/Ermesoml/VagasBRPWA</a>
+        </div>
       </div>
     </div>
    </div>
@@ -43,10 +47,8 @@
 
 <script>
 
-import CardDetalhesVaga from "@/components/CardDetalhesVaga"
-
 export default {
-  name: 'Contato',
+  name: 'Sobre',
   data(){
     return {
       repositorios: [
