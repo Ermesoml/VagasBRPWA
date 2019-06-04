@@ -61,7 +61,6 @@
       loading: function(){
         return this.$store.state.loading;
       },
-     
     },
     created(){
       this.filtroTituloVaga = this.$store.state.filtroTituloVaga;

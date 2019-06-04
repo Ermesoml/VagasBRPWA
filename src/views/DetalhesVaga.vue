@@ -1,5 +1,8 @@
 <template class="is-clipped">
-  <card-detalhes-vaga :vaga="vaga"></card-detalhes-vaga>
+  <div>
+    <card-detalhes-vaga v-if="!$store.state.loading" :vaga="$store.state.vagaSelecionada"></card-detalhes-vaga>
+    <b-loading :is-full-page="true" :active.sync="$store.state.loading" :can-cancel="false"></b-loading>
+  </div>
 </template>
 
 <script>
@@ -11,26 +14,12 @@ export default {
   components: {
     CardDetalhesVaga
   },
-  data () {
-    return {
-      linkAPI: process.env.VUE_APP_VAGAS_API,
-      vaga: {}
-    }
-  },
   created(){
     this.carregarDetalhesVaga()
   },
   methods: {
     carregarDetalhesVaga(){
-      if (!this.linkAPI) return;
-  
-      this.axios.get(`${this.linkAPI}/vaga/${this.$route.params.vaga_id}`)
-      .then((response) => {
-        this.vaga = response.data
-      })
-      .catch(err => {
-        console.error('Ocorreu um erro na requisição! ' + JSON.stringify(err));
-      })
+      this.$store.dispatch('buscarVagasSelecionada', this.$route.params.vaga_id);
     }
   }
 }
