@@ -16,6 +16,14 @@
       <div class="row columns is-multiline">
         <div class="column is-full" v-if="!loading">
           <b-field class="is-full">
+            <!-- <b-select placeholder="Select a name">
+              <option
+                v-for="repositorio in $store.state.repositorios"
+                :value="repositorio._id"
+                :key="repositorio._id">
+                {{ repositorio._id }}
+              </option>
+            </b-select> -->
             <b-input placeholder="Digite aqui seu filtro..."
               type="search"
               icon="magnify"

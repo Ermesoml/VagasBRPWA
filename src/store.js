@@ -8,6 +8,8 @@ export default new Vuex.Store({
   state: {
     paginaAtual: 1,
     filtroTituloVaga: '',
+    repositorios: [],
+    filtroRepositorio: '',
     vagas: [],
     vagaSelecionada: {},
     loading: false
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     },
     atualizarPagina(state, payload){
       state.paginaAtual = payload;
+    },
+    atualizarRepositorios(state, payload){
+      state.repositorios = payload;
     },
     atualizarVagaSelecionada(state, payload){
       state.vagaSelecionada = payload;
@@ -54,6 +59,14 @@ export default new Vuex.Store({
       .catch(err => {
         console.error('Ocorreu um erro na requisição! ' + JSON.stringify(err))
         commit('atualizarLoading', false);
+      })
+
+      axios.get(`${process.env.VUE_APP_VAGAS_API}/repositorios`)
+      .then((response) => {
+        commit('atualizarRepositorios', response.data)
+      })
+      .catch(err => {
+        console.error('Ocorreu um erro na requisição de repositórios! ' + JSON.stringify(err))
       })
     },
     buscarVagasSelecionada({commit}, vagaId){
