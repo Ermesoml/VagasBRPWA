@@ -14,27 +14,34 @@
     </section>
     <div class="section">
       <div class="row columns is-multiline">
-        <div class="column is-full" v-if="!loading">
-          <b-field class="is-full">
-            <!-- <b-select placeholder="Select a name">
+        <div class="column is-one-third" v-if="!loading">
+          <b-field label="Repositório" label-position="on-border">
+            <b-select expanded v-model="filtroRepositorio">
               <option
                 v-for="repositorio in $store.state.repositorios"
                 :value="repositorio._id"
                 :key="repositorio._id">
                 {{ repositorio._id }}
               </option>
-            </b-select> -->
+            </b-select>
+          </b-field>
+        </div>
+        <div class="column is-half" v-if="!loading">
+          <b-field label="Filtro" label-position="on-border">
             <b-input placeholder="Digite aqui seu filtro..."
+              expanded
               type="search"
               icon="magnify"
               v-model="filtroTituloVaga"
               expanded
-              @keydown.native.enter="filtrarVagas(filtroTituloVaga)">
+              @keydown.native.enter="filtrarVagas(filtroTituloVaga, filtroRepositorio)">
             </b-input>
-            <p class="control">
-              <button class="button is-primary" @click="filtrarVagas(filtroTituloVaga)">Filtrar</button>
-            </p>
           </b-field>
+        </div>
+        <div class="column is-two-third" v-if="!loading">
+          <p class="control">
+            <button class="button is-primary is-fullwidth" @click="filtrarVagas(filtroTituloVaga, filtroRepositorio)">Filtrar</button>
+          </p>
         </div>
         <div class="column is-one-third" v-for="vaga in $store.state.vagas">
           <router-link :to="`/vaga/${vaga._id}`">
@@ -62,7 +69,8 @@
     },
     data(){
       return {
-        filtroTituloVaga: ''
+        filtroTituloVaga: '',
+        filtroRepositorio: '',
       }
     },
     computed:{
@@ -72,7 +80,8 @@
     },
     created(){
       this.filtroTituloVaga = this.$store.state.filtroTituloVaga;
-      
+      this.filtroRepositorio = this.$store.state.filtroRepositorio;
+
       if (this.$store.state.vagas.length > 0)
         return;
       
@@ -82,8 +91,8 @@
       carregarVagas(pagina = 1){
         this.$store.dispatch('buscarVagasNovaPagina', pagina);
       },
-      filtrarVagas(filtroTituloVaga){
-        this.$store.dispatch('buscarVagasFiltrando', filtroTituloVaga);
+      filtrarVagas(filtroTituloVaga, filtroRepositorio){
+        this.$store.dispatch('buscarVagasFiltrando', {filtroTituloVaga: filtroTituloVaga, filtroRepositorio: filtroRepositorio});
       }
     }
   }
