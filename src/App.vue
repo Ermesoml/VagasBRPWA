@@ -15,7 +15,7 @@
 
       <div id="navbarBasicExample" :class="`navbar-menu ${isActive ? 'is-active': ''}`">
         <div class="navbar-start">
-          <a class="navbar-item">
+          <!-- <a class="navbar-item">
             Frontend
           </a>
 
@@ -25,7 +25,7 @@
 
           <a class="navbar-item">
             Mobile
-          </a>
+          </a> -->
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
