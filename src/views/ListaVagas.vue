@@ -21,7 +21,7 @@
                 v-for="repositorio in $store.state.repositorios"
                 :value="repositorio._id"
                 :key="repositorio._id">
-                {{ repositorio._id }}
+                {{ repositorio._id }} ({{repositorio.count}})
               </option>
             </b-select>
           </b-field>

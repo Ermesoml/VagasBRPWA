@@ -22,7 +22,8 @@ export default new Vuex.Store({
       state.paginaAtual = payload;
     },
     atualizarRepositorios(state, payload){
-      state.repositorios = [{_id: 'Todos'},...payload];
+      const c = payload.reduce((a, b) => ({count: a.count + b.count}))
+      state.repositorios = [{_id: 'Todos', count: c.count},...payload];
     },
     atualizarVagaSelecionada(state, payload){
       state.vagaSelecionada = payload;
@@ -45,7 +46,6 @@ export default new Vuex.Store({
       dispatch('buscarVagasAPI');
     },
     buscarVagasFiltrando({commit, dispatch}, filtro){
-      console.error(filtro.filtroRepositorio)
       commit('atualizarPagina', 1)
       commit('atualizarLoading', true)
       commit('atualizarFiltros', {filtroTituloVaga: filtro.filtroTituloVaga, filtroRepositorio: filtro.filtroRepositorio});
