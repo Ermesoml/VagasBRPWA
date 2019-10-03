@@ -10,6 +10,7 @@ export default new Vuex.Store({
     filtroTituloVaga: '',
     repositorios: [],
     filtroRepositorio: 'Todos',
+    tipoFiltroSelecionado: 'S',
     vagas: [],
     vagaSelecionada: {},
     loading: false
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     atualizarFiltros(state, payload){
       state.filtroTituloVaga = payload.filtroTituloVaga;
       state.filtroRepositorio = payload.filtroRepositorio;
+      state.tipoFiltroSelecionado = payload.tipoFiltroSelecionado;
     },
     limparVagas(state){
       state.vagas = [];
@@ -48,12 +50,12 @@ export default new Vuex.Store({
     buscarVagasFiltrando({commit, dispatch}, filtro){
       commit('atualizarPagina', 1)
       commit('atualizarLoading', true)
-      commit('atualizarFiltros', {filtroTituloVaga: filtro.filtroTituloVaga, filtroRepositorio: filtro.filtroRepositorio});
+      commit('atualizarFiltros', {filtroTituloVaga: filtro.filtroTituloVaga, filtroRepositorio: filtro.filtroRepositorio, tipoFiltroSelecionado: filtro.tipoFiltroSelecionado});
       commit('limparVagas');
       dispatch('buscarVagasAPI');
     },
     buscarVagasAPI({commit, state}){
-      axios.get(`${process.env.VUE_APP_VAGAS_API}/vagas?pagina=${state.paginaAtual}&filtroTituloVaga=${state.filtroTituloVaga}&filtroRepositorio=${state.filtroRepositorio}`)
+      axios.get(`${process.env.VUE_APP_VAGAS_API}/vagas?pagina=${state.paginaAtual}&filtroTituloVaga=${state.filtroTituloVaga}&filtroRepositorio=${state.filtroRepositorio}&tipoFiltroSelecionado=${state.tipoFiltroSelecionado}`)
       .then((response) => {
         commit('inserirNovasVagas', response.data)
         commit('atualizarLoading', false);

@@ -14,7 +14,19 @@
     </section>
     <div class="section">
       <div class="row columns is-multiline">
-        <div class="column is-one-third" v-if="!loading">
+        <div class="column is-half" v-if="!loading">
+          <b-field label="Repositório" label-position="on-border">
+            <b-select expanded v-model="tipoFiltroSelecionado">
+              <option
+                v-for="tipoFiltro in tiposFiltros"
+                :value="tipoFiltro.valor"
+                :key="tipoFiltro.valor">
+                {{ tipoFiltro.titulo }}
+              </option>
+            </b-select>
+          </b-field>
+        </div>
+        <div class="column is-half" v-if="!loading">
           <b-field label="Repositório" label-position="on-border">
             <b-select expanded v-model="filtroRepositorio">
               <option
@@ -26,7 +38,7 @@
             </b-select>
           </b-field>
         </div>
-        <div class="column is-half" v-if="!loading">
+        <div class="column is-two-thirds" v-if="!loading">
           <b-field label="Filtro" label-position="on-border">
             <b-input placeholder="Digite aqui seu filtro..."
               expanded
@@ -34,13 +46,13 @@
               icon="magnify"
               v-model="filtroTituloVaga"
               expanded
-              @keydown.native.enter="filtrarVagas(filtroTituloVaga, filtroRepositorio)">
+              @keydown.native.enter="filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltroSelecionado)">
             </b-input>
           </b-field>
         </div>
-        <div class="column is-two-third" v-if="!loading">
+        <div class="column is-one-third" v-if="!loading">
           <p class="control">
-            <button class="button is-primary is-fullwidth" @click="filtrarVagas(filtroTituloVaga, filtroRepositorio)">Filtrar</button>
+            <button class="button is-primary is-fullwidth" @click="filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltroSelecionado)">Filtrar</button>
           </p>
         </div>
         <div class="column is-one-third" v-for="vaga in $store.state.vagas">
@@ -71,6 +83,15 @@
       return {
         filtroTituloVaga: '',
         filtroRepositorio: '',
+        tipoFiltroSelecionado: 'S',
+        tiposFiltros: [{
+          valor: 'S',
+          titulo: 'Simples (Título e Texto)',
+        },
+        {
+          valor: 'A',
+          titulo: 'Avançada (somente Texto)',
+        }]
       }
     },
     computed:{
@@ -91,8 +112,8 @@
       carregarVagas(pagina = 1){
         this.$store.dispatch('buscarVagasNovaPagina', pagina);
       },
-      filtrarVagas(filtroTituloVaga, filtroRepositorio){
-        this.$store.dispatch('buscarVagasFiltrando', {filtroTituloVaga: filtroTituloVaga, filtroRepositorio: filtroRepositorio});
+      filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltro){ 
+        this.$store.dispatch('buscarVagasFiltrando', {filtroTituloVaga: filtroTituloVaga, filtroRepositorio: filtroRepositorio, tipoFiltroSelecionado: tipoFiltro});
       }
     }
   }
