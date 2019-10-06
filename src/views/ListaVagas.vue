@@ -14,19 +14,7 @@
     </section>
     <div class="section">
       <div class="row columns is-multiline">
-        <div class="column is-half" v-if="!loading">
-          <b-field label="Repositório" label-position="on-border">
-            <b-select expanded v-model="tipoFiltroSelecionado">
-              <option
-                v-for="tipoFiltro in tiposFiltros"
-                :value="tipoFiltro.valor"
-                :key="tipoFiltro.valor">
-                {{ tipoFiltro.titulo }}
-              </option>
-            </b-select>
-          </b-field>
-        </div>
-        <div class="column is-half" v-if="!loading">
+        <div class="column is-one-third" v-if="!loading">
           <b-field label="Repositório" label-position="on-border">
             <b-select expanded v-model="filtroRepositorio">
               <option
@@ -38,9 +26,9 @@
             </b-select>
           </b-field>
         </div>
-        <div class="column is-two-thirds" v-if="!loading">
-          <b-field label="Filtro" label-position="on-border">
-            <b-input placeholder="Digite aqui seu filtro..."
+        <div class="column is-half" v-if="!loading">
+          <b-field label="Filtro (avançado)" label-position="on-border">
+            <b-input placeholder="Ex.: javascript remot"
               expanded
               type="search"
               icon="magnify"
@@ -50,7 +38,7 @@
             </b-input>
           </b-field>
         </div>
-        <div class="column is-one-third" v-if="!loading">
+        <div class="column is-two-third" v-if="!loading">
           <p class="control">
             <button class="button is-primary is-fullwidth" @click="filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltroSelecionado)">Filtrar</button>
           </p>
