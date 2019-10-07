@@ -31,7 +31,6 @@
             <b-input placeholder="Ex.: javascript remot"
               expanded
               type="search"
-              icon="magnify"
               v-model="filtroTituloVaga"
               expanded
               @keydown.native.enter="filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltroSelecionado)">
