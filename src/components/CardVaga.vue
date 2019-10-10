@@ -1,22 +1,24 @@
 <template class="is-clipped">
-  <div class="card large round is-shady">
+  <div class="card round is-shady">
+    <header class="card-header">
+      <p class="card-header-title">{{vaga.title}}</p>
+      <labels-vaga :labels="vaga.labels"></labels-vaga>
+    </header>
     <div class="card-content">
       <div class="media">
         <div class="media-left">
-          <figure class="image is-96x96">
+          <figure class="image is-64x64">
             <img :src="vaga.user_avatar_url" alt="Avagar URL" class="is-rounded">
           </figure>
-          <div class="has-text-grey has-text-weight-bold has-text-centered texto-12">{{vaga.created_at | formatarData}}</div>
-          <div class="has-text-grey has-text-weight-bold has-text-centered texto-12" v-show="vaga.repo_name">@{{vaga.repo_name}}</div>
         </div>
-        <div class="content">
-          <div class="title is-6 no-padding m-b-sm">{{vaga.title}}</div>
-          <p>
-            <labels-vaga :labels="vaga.labels"></labels-vaga>
-          </p>
+        <div class="media-right">
+          <div class="has-text-success has-text-weight-bold has-text-centered is-size-6" v-show="vaga.repo_name">@{{vaga.repo_name}}</div>
         </div>
       </div>
     </div>
+    <footer class="card-footer">
+      <div class="card-footer-item has-text-grey has-text-weight-bold has-text-centered is-size-7">{{vaga.created_at | formatarData}}</div>
+    </footer>
   </div>
 </template>
 
@@ -42,8 +44,21 @@ export default {
 }
 </script>
 
-<style>
-  .texto-12{
-    font-size: 12px
+<style lang="scss">
+  .card.is-shady {
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 !important;
+    box-sizing: border-box;
+    &:hover {
+      transform: scale(1.03)
+    }
+    .media {
+      display: flex;
+      align-items: center;
+    }
   }
 </style>
