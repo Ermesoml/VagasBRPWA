@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar container" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
-          Vagas BR
+          Vagas<strong>BR</strong>
         </a>
 
         <a role="button" :class="`navbar-burger burger ${isActive ? 'is-active': ''}`" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="isActive = !isActive">
@@ -54,6 +54,8 @@
 </script>
 
 <style lang="scss">
+  @import "~bulma/bulma";
+
   $sizeUnit: rem;
   $marginKey: 'm';
   $paddingKey: 'p';
@@ -98,5 +100,23 @@
               padding-#{$posValue}: sizeValue($sizeKey, $sizeValue);
           }
       }
+  }
+  // Logo
+  .navbar-brand {
+    font-size: 2em;
+    font-weight: bold;
+    .navbar-item {
+      color: $blue;
+      text-shadow: 0 1px #fff, 0 -1px #fff, 1px 0 #fff, -1px 0 #fff, 0 4px 5px $yellow;
+      transition: .3s all;
+      &:hover {
+        color: darken($yellow, 20%);
+        text-shadow: 0 1px #fff, 0 -1px #fff, 1px 0 #fff, -1px 0 #fff, 0 4px 5px $green;
+      }
+    }
+    strong {
+      color: $primary;
+      margin-left: 5px;
+    }
   }
 </style>
