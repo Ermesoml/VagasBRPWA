@@ -15,7 +15,7 @@
         <div class="column is-full">
           <h1  class="title">Contribuintes</h1>
           <a :href="contribuinte.link_github" v-for="contribuinte in contribuintes">
-            <div class="card large round is-shady m-t-sm">
+            <div class="card large round m-t-sm">
               <div class="card-content">
                 <div class="media">
                   <div class="media-left">
