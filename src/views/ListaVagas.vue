@@ -29,7 +29,7 @@
           </div>
           <div class="column is-half" v-if="!loading">
             <b-field label="Filtro (avançado)" label-position="on-border">
-              <b-input placeholder="Ex.: javascript remot"
+              <b-input placeholder="Ex.: javascript remoto"
                 expanded
                 type="search"
                 v-model="filtroTituloVaga"
