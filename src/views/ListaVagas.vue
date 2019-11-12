@@ -43,12 +43,28 @@
               <button class="button is-primary is-fullwidth" @click="filtrarVagas(filtroTituloVaga, filtroRepositorio, tipoFiltroSelecionado)">Filtrar</button>
             </p>
           </div>
-          <div class="column is-full-mobile is-half-tablet is-one-third-desktop is-one-quarter-fullhd" v-for="vaga in $store.state.vagas">
-            <router-link :to="`/vaga/${vaga._id}`">
-              <card-vaga :vaga="vaga"></card-vaga>
-            </router-link>
-          </div>
         </div>
+        <hr class="is-marginless">
+        
+        <div class="is-fullwidth view-jobs-options">
+          <button class="button" @click="usingCard = !usingCard">
+            <b-icon
+              v-if="usingCard"
+              pack="fas"
+              icon="id-card-alt"
+              size="is-small">
+            </b-icon>
+            <b-icon
+              v-else
+              pack="fas"
+              icon="table"
+              size="is-small">
+            </b-icon>
+          </button>
+        </div>
+        
+        <jobs-list class="is-fullwidth" :viewType="usingCard ? 'cards' : 'table'" :jobs="$store.state.vagas"></jobs-list>
+        
         <div class="centered-content" v-if="!loading && $store.state.vagas.length > 0">
           <b-button size="is-large" type="is-success" outlined rounded @click="carregarVagas($store.state.paginaAtual + 1)">Buscar mais vagas</b-button>
         </div>
@@ -60,13 +76,13 @@
 
 <script>
   import VueMarkdown from 'vue-markdown'
-  import CardVaga from '@/components/CardVaga'
+  import JobsList from '@/components/JobsList'
 
   export default {
     name: 'Vagas',
     components: {
       VueMarkdown,
-      CardVaga
+      JobsList
     },
     data(){
       return {
@@ -80,7 +96,8 @@
         {
           valor: 'A',
           titulo: 'Avançada (somente Texto)',
-        }]
+        }],
+        usingCard: false
       }
     },
     computed:{
@@ -108,7 +125,6 @@
   }
 </script>
 
-
 <style scoped>
   @import "https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css";
   @import "https://unpkg.com/katex@0.10.0/dist/katex.min.css";
@@ -118,19 +134,12 @@
     justify-content: center;
     align-items: center;
   }
-  .is-shady {
-    animation: flyintoright .4s backwards;
-    background: rgba(235, 235, 235, 0.705);
-    /* box-shadow: rgba(0, 0, 0, .1) 0 1px 0; */
-    border-radius: 4px;
-    display: inline-block;
-    margin: 10px;
-    position: relative;
-    transition: all .2s ease-in-out;
-    cursor: pointer;
-  }
-  .is-shady:hover {
-    box-shadow: 0 10px 16px rgba(0, 0, 0, .13), 0 6px 6px rgba(0, 0, 0, .19);
-  }
 
+  .view-jobs-options{
+    display: flex;
+    justify-content: right;
+    align-items: flex-end;
+    flex-direction: row-reverse;
+    margin: 10px 0 10px 0;
+  }
 </style>

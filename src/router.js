@@ -7,7 +7,7 @@ import ListaVagas from '@/views/ListaVagas'
 import DetalhesVaga from '@/views/DetalhesVaga'
 import Sobre from '@/views/Sobre'
 
-Vue.use(Buefy)
+Vue.use(Buefy, {defaultIconPack: 'fas',})
 Vue.use(Router)
 
 export default new Router({
